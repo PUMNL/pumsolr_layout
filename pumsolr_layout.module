@@ -1,0 +1,12 @@
+<?php
+
+function pumsolr_layout_apachesolr_process_results(array &$results, DrupalSolrQueryInterface $query) {
+  foreach ($results as $id => $result) {
+    $results[$id]['snippet'] = '<p>'.$result['snippet'].'</p>';
+  }
+}
+
+function pumsolr_layout_apachesolr_query_prepare(DrupalSolrQueryInterface &$query) {
+  $query->replaceParam('hl.snippets', '1');
+  $query->addParam('hl.fragsize', 200);
+}
