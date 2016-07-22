@@ -10,3 +10,23 @@ function pumsolr_layout_apachesolr_query_prepare(DrupalSolrQueryInterface &$quer
   $query->replaceParam('hl.snippets', '1');
   $query->addParam('hl.fragsize', 200);
 }
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function pumsolr_layout_theme_registry_alter(&$theme_registry) {
+  $theme_registry['apachesolr_search_noresults']['function'] = 'theme_pumsolr_layout_search_noresults';
+}
+
+/**
+ * Brief message to display when no results match the query.
+ *
+ * @see search_help()
+ */
+function theme_pumsolr_layout_search_noresults() {
+  return t('<ul class="no-search-results">
+<li>Check if your spelling is correct, or try removing filters.</li>
+<li>Remove quotes around phrases to match each word individually: <em>"blue drop"</em> will match less than <em>blue drop</em>.</li>
+<li>You can require or exclude terms using + and -: <em>big +blue drop</em> will require a match on <em>blue</em> while <em>big blue -drop</em> will exclude results that contain <em>drop</em>.</li>
+</ul>');
+}
