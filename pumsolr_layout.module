@@ -30,3 +30,42 @@ function theme_pumsolr_layout_search_noresults() {
 <li>You can require or exclude terms using + and -: <em>big +blue drop</em> will require a match on <em>blue</em> while <em>big blue -drop</em> will exclude results that contain <em>drop</em>.</li>
 </ul>');
 }
+
+function pumsolr_layout_block_info() {
+  $blocks['portal_search_block'] = array(
+
+    'info' => t('Portal Search Block'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+function pumsolr_layout_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'portal_search_block':
+      $block['title'] = 'Portal search';
+      $srchblk = drupal_get_form('pumsolr_layout_protal_search_block_form');
+      $block['content'] = drupal_render($srchblk);
+      break;
+  }
+  return $block;
+}
+
+/* create search form */
+
+function pumsolr_layout_protal_search_block_form($form, &$form_state) {
+  $form['keys'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Search',
+  );
+  return $form;
+}
+
+function pumsolr_layout_protal_search_block_form_submit($form, &$form_state) {
+  drupal_goto('search/portal/' . $form_state['values']['keys']);
+}
